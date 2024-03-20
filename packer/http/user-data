@@ -1,0 +1,29 @@
+#cloud-config
+autoinstall:
+  version: 1
+  source:
+    id: ubuntu-server-minimal
+  identity:
+    hostname: ubuntu-2204-r4
+    password: "${password_crypt}"
+    username: "${user}"
+  user-data:
+    disable_root: true
+  refresh-installer:
+    update: true
+  packages:
+  - openssh-server
+  - qemu-guest-agent
+  - cloud-init
+  ssh:
+    allow-pw: false
+    install-server: true
+    authorized-keys:
+      - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILBPOnqmExTKt8OceAq9K4d/MkVu4WsU+sqiEV7KbtyH"
+  storage:
+    layout:
+      name: direct
+  kernel:
+    package: linux-image-kvm
+  timezone: Europe/Brussels
+  updates: all

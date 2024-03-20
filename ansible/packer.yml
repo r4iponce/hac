@@ -1,0 +1,14 @@
+---
+- name: Configure template
+  hosts: default
+  become: true
+  roles:
+    - auditd
+    - fail2ban
+    - journald
+    - sshd
+    - timesyncd
+  post_tasks:
+    - name: Clean cloud-init
+      ansible.builtin.command: "cloud-init clean"
+      changed_when: false
