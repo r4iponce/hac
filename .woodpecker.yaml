@@ -1,0 +1,8 @@
+steps:
+  - name: ansible-lint
+    image: debian
+    commands:
+      - apt-get update
+      - apt-get install -y ansible-lint
+      - cd ansible/
+      - ansible-lint
