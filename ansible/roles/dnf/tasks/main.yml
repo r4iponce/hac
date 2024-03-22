@@ -1,0 +1,10 @@
+---
+- name: Upgrade all packages
+  ansible.builtin.dnf:
+    name: "*"
+    state: latest
+
+- name: Install epel
+  ansible.builtin.dnf:
+    name: "epel-release"
+    state: "latest"

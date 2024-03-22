@@ -86,6 +86,7 @@ source "proxmox-iso" "ubuntu-2204" {
 
     memory               = 8192
     cores                = 4
+    cpu_type             = "host"
     vm_id                = 9000
 
     node                 = "sorm"
@@ -105,11 +106,10 @@ source "proxmox-iso" "ubuntu-2204" {
 build {
   sources = ["source.proxmox-iso.ubuntu-2204"]
   provisioner "ansible" {
-      ansible_env_vars = ["ANSIBLE_CONFIG=../ansible/ansible.cfg", "ANSIBLE_HOST_KEY_CHECKING=False", "ANSIBLE_BECOME_PASS=${var.ssh_password}"]
+      ansible_env_vars = ["ANSIBLE_CONFIG=../../ansible/ansible.cfg", "ANSIBLE_HOST_KEY_CHECKING=False", "ANSIBLE_BECOME_PASS=${var.ssh_password}"]
       extra_arguments  = [ "--scp-extra-args", "'-O'", "-vv", "--extra-vars", "ansible_become_password=${var.ssh_password}" ]
       command          = "ansible-playbook"
-      roles_path       = "../ansible/roles"
-      playbook_file    = "../ansible/packer.yml"
+      roles_path       = "../../ansible/roles"
+      playbook_file    = "../../ansible/packer.yml"
   }
-
 }

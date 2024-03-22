@@ -1,0 +1,8 @@
+[sshd]
+enabled = true
+bantime = -1
+maxretry = 3
+{% if ansible_facts['os_family'] == "RedHat" %}
+backend = systemd
+banaction = firewallcmd-ipset
+{% endif %}

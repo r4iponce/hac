@@ -6,6 +6,16 @@
   notify:
     - Start auditd
     - Enable auditd
+  when: ansible_facts['os_family'] == "Debian"
+
+- name: Install audit
+  ansible.builtin.dnf:
+    name: audit
+    state: latest
+  notify:
+    - Start auditd
+    - Enable auditd
+  when: ansible_facts['os_family'] == "RedHat"
 
 - name: Add rules
   ansible.builtin.copy:

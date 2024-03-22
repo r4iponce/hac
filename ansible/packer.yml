@@ -3,11 +3,14 @@
   hosts: default
   become: true
   roles:
+    - role: dnf
+      when: ansible_facts['os_family'] == "RedHat"
     - auditd
     - fail2ban
     - journald
     - sshd
-    - timesyncd
+    - role: timesyncd
+      when: ansible_facts['os_family'] == "Ubuntu"
   post_tasks:
     - name: Clean cloud-init
       ansible.builtin.command: "cloud-init clean"
