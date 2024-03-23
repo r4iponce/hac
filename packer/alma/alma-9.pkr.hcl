@@ -11,7 +11,6 @@ packer {
   }
 }
 
-
 variable "proxmox_user" {
   type = string
   default = "packer"
@@ -42,9 +41,15 @@ variable "ssh_password" {
     default = null
 }
 
+variable "ssh_user" {
+  type    = string
+  default = null
+}
+
+
 source "proxmox-iso" "alma-9" {
     http_content = {
-      "/ks.cfg" = templatefile("http/ks.cfg", { grub_password = var.grub_password_crypt, password_crypt = var.ssh_password_crypt })
+      "/ks.cfg" = templatefile("http/ks.cfg", { grub_password = var.grub_password_crypt, password_crypt = var.ssh_password_crypt, user = var.ssh_user,  })
     }
     
 
@@ -93,8 +98,8 @@ source "proxmox-iso" "alma-9" {
     username             = "${var.proxmox_user}"
     token                = "${var.proxmox_token}"
     proxmox_url          = "${var.proxmox_url}/api2/json"
-    ssh_username         = "root"
-    ssh_password         = "${var.ssh_password}"
+    ssh_username         = "${var.ssh_user}"
+    ssh_private_key_file = "~/.ssh/id_ed25519"
     ssh_timeout          = "15m"
     template_description = "Alma Linux 9 build by packer on ${timestamp()}"
     template_name        = "alma-9-r4"
