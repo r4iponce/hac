@@ -1,0 +1,60 @@
+---
+- name: Install roles dependencies
+  ansible.builtin.apt:
+    name: "{{ item }}"
+  with_items:
+    - git
+    - libpq-dev
+    - libxmlsec1-dev
+
+- name: Add deadsnake ppa for python3.12
+  ansible.builtin.apt_repository:
+    repo: 'ppa:deadsnakes/ppa'
+
+- name: Install python3.12
+  ansible.builtin.apt:
+    name: "{{ item }}"
+  with_items:
+    - python3.12
+    - python3.12-distutils
+    - python3.12-venv
+    - python3.12-dev
+
+- name: Add longsleep ppa for go 1.22
+  ansible.builtin.apt_repository:
+    repo: 'ppa:longsleep/golang-backports'
+
+- name: Install go 1.22
+  ansible.builtin.apt:
+    name: "golang-go"
+
+- name: Download node GPG key
+  ansible.builtin.get_url:
+    url: 'https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key'
+    dest: "/usr/share/keyrings/node-archive-keyring.asc"
+    mode: "0644"
+    validate_certs: true
+    checksum: sha512:36c77b2bddaea0523ab90962a38ebd3ee90c3d5cf17e525f02898aa8e7b14fd1026f6d659b99d931fe907e9142a98ff08075ebfc56f0f1e2001c6ba4791d3daa
+  changed_when: false
+  no_log: false
+
+- name: Add nodesource repo for node
+  ansible.builtin.apt_repository:
+    repo: 'deb [arch=amd64 signed-by=/usr/share/keyrings/node-archive-keyring.asc] https://deb.nodesource.com/node_21.x nodistro main'
+
+- name: Install nodejs
+  ansible.builtin.apt:
+    name: nodejs
+
+- name: Add authentik user
+  ansible.builtin.user:
+    name: "authentik"
+    system: true
+  
+- name: Create /opt/authentik
+  ansible.builtin.file:
+    path: /opt/authentik
+    state: directory
+    mode: '0755'
+    owner: authentik
+
