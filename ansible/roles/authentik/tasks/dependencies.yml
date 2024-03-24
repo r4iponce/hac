@@ -9,7 +9,7 @@
 
 - name: Add deadsnake ppa for python3.12
   ansible.builtin.apt_repository:
-    repo: 'ppa:deadsnakes/ppa'
+    repo: ppa:deadsnakes/ppa
 
 - name: Install python3.12
   ansible.builtin.apt:
@@ -22,16 +22,16 @@
 
 - name: Add longsleep ppa for go 1.22
   ansible.builtin.apt_repository:
-    repo: 'ppa:longsleep/golang-backports'
+    repo: ppa:longsleep/golang-backports
 
 - name: Install go 1.22
   ansible.builtin.apt:
-    name: "golang-go"
+    name: golang-go
 
 - name: Download node GPG key
   ansible.builtin.get_url:
-    url: 'https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key'
-    dest: "/usr/share/keyrings/node-archive-keyring.asc"
+    url: https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key
+    dest: /usr/share/keyrings/node-archive-keyring.asc
     mode: "0644"
     validate_certs: true
     checksum: sha512:36c77b2bddaea0523ab90962a38ebd3ee90c3d5cf17e525f02898aa8e7b14fd1026f6d659b99d931fe907e9142a98ff08075ebfc56f0f1e2001c6ba4791d3daa
@@ -40,7 +40,7 @@
 
 - name: Add nodesource repo for node
   ansible.builtin.apt_repository:
-    repo: 'deb [arch=amd64 signed-by=/usr/share/keyrings/node-archive-keyring.asc] https://deb.nodesource.com/node_21.x nodistro main'
+    repo: deb [arch=amd64 signed-by=/usr/share/keyrings/node-archive-keyring.asc] https://deb.nodesource.com/node_21.x nodistro main
 
 - name: Install nodejs
   ansible.builtin.apt:
@@ -48,13 +48,12 @@
 
 - name: Add authentik user
   ansible.builtin.user:
-    name: "authentik"
+    name: authentik
     system: true
-  
+
 - name: Create /opt/authentik
   ansible.builtin.file:
     path: /opt/authentik
     state: directory
-    mode: '0755'
+    mode: "0755"
     owner: authentik
-

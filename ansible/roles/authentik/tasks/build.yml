@@ -1,7 +1,7 @@
 ---
 - name: Get authentik source
   ansible.builtin.git:
-    repo: 'https://github.com/goauthentik/authentik.git'
+    repo: https://github.com/goauthentik/authentik.git
     dest: /opt/authentik/src
     version: version/2024.2.2
     force: true
@@ -16,7 +16,7 @@
     npm run build
 
 - name: Create virtualenv
-  ansible.builtin.command: "python3.12 -m venv /opt/authentik/src/venv"
+  ansible.builtin.command: python3.12 -m venv /opt/authentik/src/venv
 
 - name: Installl poetry and dependencies
   ansible.builtin.shell: |
@@ -26,7 +26,7 @@
 
 
 - name: Build go proxy
-  ansible.builtin.shell: |
+  ansible.builtin.shell: |-
     cd /opt/authentik/src/
     sed -i "s/c.Setup(\".\/authentik\/lib\/default.yml\", \".\/local.env.yml\")/c.Setup(\"\/etc\/authentik\/config.yml\", \".\/authentik\/lib\/default.yml\", \".\/local.env.yml\")/" /opt/authentik/src/internal/config/config.go
     go build -o /opt/authentik/src/authentik-server  ./cmd/server/

@@ -3,7 +3,7 @@
   ansible.builtin.import_tasks: dependencies.yml
   become: true
   tags:
-    - install_dependencies 
+    - install_dependencies
 
 - name: Build authentik
   ansible.builtin.import_tasks: build.yml
