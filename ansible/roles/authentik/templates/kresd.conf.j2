@@ -1,0 +1,26 @@
+net.listen('{{resolver_ip}}', 53, { kind = 'dns'})
+cache.size = 128 * MB
+modules = {
+	'hints > iterate',  -- Allow loading /etc/hosts or custom root hints
+	'predict',          -- Prefetch expiring/frequent records
+}
+
+modules.load('prefill')
+prefill.config({
+    ['.'] = {
+        url = 'https://www.internic.net/domain/root.zone',
+        interval = 86400, -- seconds
+    }
+})
+
+modules.load('view')
+view:addr('127.0.0.0/8', policy.all(policy.PASS))
+view:addr('::1/128', policy.all(policy.PASS))
+{% for prefix in kresd_allow %}
+view:addr('{{ prefix }}', policy.all(policy.PASS))
+{% endfor %}
+view:addr('0.0.0.0/0', policy.all(policy.DROP))
+view:addr('::/0', policy.all(policy.DROP))
+
+log_target('stdout')
+log_level('debug') 
