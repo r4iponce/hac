@@ -6,5 +6,5 @@
 
 - name: Install epel
   ansible.builtin.dnf:
-    name: "epel-release"
-    state: "latest"
+    name: epel-release
+    state: latest

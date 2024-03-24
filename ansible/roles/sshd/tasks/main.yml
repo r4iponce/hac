@@ -2,8 +2,8 @@
 - name: Disable Password Authentication
   ansible.builtin.lineinfile:
     dest: /etc/ssh/sshd_config
-    regexp: '^PasswordAuthentication'
-    line: "PasswordAuthentication no"
+    regexp: ^PasswordAuthentication
+    line: PasswordAuthentication no
     state: present
     backup: true
   notify:
@@ -12,8 +12,8 @@
 - name: Disable Root Login
   ansible.builtin.lineinfile:
     dest: /etc/ssh/sshd_config
-    regexp: '^PermitRootLogin'
-    line: "PermitRootLogin no"
+    regexp: ^PermitRootLogin
+    line: PermitRootLogin no
     state: present
     backup: true
   notify:
@@ -22,8 +22,8 @@
 - name: Restrict host key
   ansible.builtin.lineinfile:
     dest: /etc/ssh/sshd_config
-    regexp: '#HostKey /etc/ssh/ssh_host_ed25519_key'
-    line: "HostKey /etc/ssh/ssh_host_ed25519_key"
+    regexp: "#HostKey /etc/ssh/ssh_host_ed25519_key"
+    line: HostKey /etc/ssh/ssh_host_ed25519_key
     state: present
     backup: true
   notify:
@@ -31,8 +31,8 @@
 
 - name: Configure sshd
   ansible.builtin.copy:
-    src: "crypto.conf"
-    dest: "/etc/ssh/sshd_config.d/"
+    src: crypto.conf
+    dest: /etc/ssh/sshd_config.d/
     owner: root
     group: root
     mode: "0640"

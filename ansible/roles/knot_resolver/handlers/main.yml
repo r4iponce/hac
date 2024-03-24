@@ -1,0 +1,19 @@
+---
+- name: Package cache update
+  become: true
+  ansible.builtin.package:
+    update_cache: true
+
+- name: Restart knot resolver
+  become: true
+  ansible.builtin.service:
+    state: restarted
+    name: kresd@{{ item }}.service
+  with_sequence: count={{ ansible_processor_vcpus }}
+
+- name: Enable knot resolver
+  become: true
+  ansible.builtin.service:
+    enabled: true
+    name: kresd@{{ item }}.service
+  with_sequence: count={{ ansible_processor_vcpus }}

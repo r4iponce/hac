@@ -1,20 +1,20 @@
 ---
 - name: Install fail2ban
   ansible.builtin.apt:
-    name: "fail2ban"
+    name: fail2ban
     state: latest
   when: ansible_facts['os_family'] == "Debian"
 
 - name: Install fail2ban
   ansible.builtin.dnf:
-    name: "fail2ban"
+    name: fail2ban
     state: latest
   when: ansible_facts['os_family'] == "RedHat"
 
 - name: Copy sshd.conf
   ansible.builtin.template:
-    src: 'sshd.conf.j2'
-    dest: '/etc/fail2ban/jail.d/sshd.conf'
+    src: sshd.conf.j2
+    dest: /etc/fail2ban/jail.d/sshd.conf
     mode: "0640"
   notify:
     - Restart fail2ban

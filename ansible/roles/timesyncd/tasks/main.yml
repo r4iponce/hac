@@ -4,5 +4,5 @@
     name: Europe/Brussels
 
 - name: Enable ntp
-  ansible.builtin.command: 'timedatectl set-ntp true'
+  ansible.builtin.command: timedatectl set-ntp true
   changed_when: false

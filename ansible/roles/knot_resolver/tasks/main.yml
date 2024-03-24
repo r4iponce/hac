@@ -1,0 +1,21 @@
+---
+- name: Install knot repository
+  ansible.builtin.apt:
+    deb: https://secure.nic.cz/files/knot-resolver/knot-resolver-release.deb
+  notify:
+    - Package cache update
+
+- name: Install knot resolver
+  ansible.builtin.apt:
+    name: knot-resolver
+  notify:
+    - Enable knot resolver
+    - Restart knot resolver
+
+- name: Configure
+  ansible.builtin.template:
+    src: kresd.conf.j2
+    dest: /etc/knot-resolver/kresd.conf
+    mode: "0644"
+  notify:
+    - Restart knot resolver

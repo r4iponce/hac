@@ -1,6 +1,6 @@
 ---
-- name: Configure template
-  hosts: default
+- name: Configure base
+  hosts: all
   become: true
   roles:
     - role: dnf
@@ -11,7 +11,9 @@
     - sshd
     - role: timesyncd
       when: ansible_facts['os_family'] == "Ubuntu"
-  post_tasks:
-    - name: Clean cloud-init
-      ansible.builtin.command: cloud-init clean
-      changed_when: false
+
+- name: Resolver
+  hosts: resolver
+  become: true
+  roles:
+    - knot_resolver
