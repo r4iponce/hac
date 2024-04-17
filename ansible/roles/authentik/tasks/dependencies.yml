@@ -1,9 +1,13 @@
 ---
 - name: Install roles dependencies
   ansible.builtin.apt:
+    install_recommends: false
     name: "{{ item }}"
   with_items:
     - git
+    - build-essential
+    - pkg-config
+    - zlib1g-dev
     - libpq-dev
     - libxmlsec1-dev
 

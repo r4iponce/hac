@@ -11,3 +11,22 @@
   tags:
     - build
   become_user: authentik
+
+- name: Create useful directory
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    mode: "0755"
+    owner: authentik
+  with_items:
+    - /opt/authentik/certs
+    - /opt/authentik/media
+    - /etc/authentik
+
+- name: Test
+  ansible.builtin.copy:
+    remote_src: true
+    src: /opt/authentik/src/blueprints
+    dest: /opt/authentik/blueprints
+    owner: authentik
+  become: true
