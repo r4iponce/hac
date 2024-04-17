@@ -1,0 +1,40 @@
+---
+- name: Add kea dhcp pgp key
+  ansible.builtin.get_url:
+    url: https://dl.cloudsmith.io/public/isc/kea-2-4/gpg.0D9D9A1439E23DB9.key
+    dest: /usr/share/keyrings/kea-archive-keyring.asc
+    mode: "0644"
+    validate_certs: true
+    checksum: sha512:f58db6baa7f7147c3280275b6f7cc11e34836fb904604d587c1883e6b4a8e89377046809203e2f1a1a87a7f28556728a9ecdb740d62e753592d2dbab0d2e87c8
+  changed_when: false
+  no_log: false
+
+- name: Add kea dhcp repository
+  ansible.builtin.apt_repository:
+    repo: "deb [signed-by=/usr/share/keyrings/kea-archive-keyring.asc]
+     https://dl.cloudsmith.io/public/isc/kea-2-4/deb/{{ ansible_distribution|lower }} {{ ansible_distribution_release }} main"
+    state: present
+    filename: isc-kea-dhcp
+
+- name: Install isc-kea-dhcp
+  ansible.builtin.apt:
+    name: isc-kea-dhcp4-server
+  notify:
+    - Enable isc-kea-dhcp4-server
+
+- name: Configure isc-kea-dhcp
+  ansible.builtin.template:
+    src: kea-dhcp4.conf.j2
+    dest: /etc/kea/kea-dhcp4.conf
+    owner: _kea
+    mode: '0640'
+  notify:
+    - Restart isc-kea-dhcp4-server
+
+- name: Open required ports
+  community.general.ufw:
+    rule: allow
+    port: "{{ item }}"
+    proto: udp
+  with_items:
+    - '67'

@@ -1,0 +1,19 @@
+---
+domain: r4.pm
+domain_search:
+  - lab.r4.pm
+  - r4.pm
+
+networks:
+  - subnet: 10.15.0.0/24
+    start: 10.15.0.200
+    end: 10.15.0.254
+    routers: 10.15.0.1
+  - subnet: 10.20.0.0/24
+    start: 10.20.0.200
+    end: 10.20.0.254
+    routers: 10.20.0.1
+  - subnet: 10.30.0.0/24
+    start: 10.30.0.200
+    end: 10.30.0.254
+    routers: 10.30.0.1

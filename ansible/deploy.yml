@@ -19,3 +19,9 @@
   become: true
   roles:
     - knot_resolver
+
+- name: DHCP
+  hosts: kea-dhcp
+  become: true
+  roles:
+    - kea_dhcp
