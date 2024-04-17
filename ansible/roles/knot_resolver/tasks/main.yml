@@ -19,3 +19,12 @@
     mode: "0644"
   notify:
     - Restart knot resolver
+
+- name: Allow port 53 (DNS)
+  community.general.ufw:
+    rule: allow
+    port: "{{ item.port }}"
+    proto: "{{ item.proto }}"
+  with_items:
+    - { port: "53", proto: "tcp" }
+    - { port: "53", proto: "udp" }

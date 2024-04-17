@@ -10,7 +10,9 @@
     - journald
     - sshd
     - role: timesyncd
-      when: ansible_facts['os_family'] == "Ubuntu"
+      when: ansible_facts['os_family'] == "Debian"
+    - role: ufw
+      when: ansible_facts['os_family'] == "Debian"
   post_tasks:
     - name: Clean cloud-init
       ansible.builtin.command: cloud-init clean
