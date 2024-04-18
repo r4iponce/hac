@@ -1,0 +1,15 @@
+---
+- name: Restart knot
+  ansible.builtin.service:
+    state: restarted
+    name: knot
+
+- name: Reload knot
+  ansible.builtin.service:
+    state: reloaded
+    name: knot
+
+- name: Enable knot
+  ansible.builtin.service:
+    enabled: true
+    name: knot

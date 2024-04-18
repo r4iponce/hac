@@ -1,0 +1,12 @@
+$ORIGIN lab.r4.pm.
+$TTL 3600
+@   IN  SOA   knot.lab.r4.pm. admin.r4.pm. (
+    2024041800 ; serial number
+    12h        ; refresh
+    15m        ; update retry
+    3w         ; expiry
+    2h         ; minimum
+)
+
+@               86400 IN NS knot.lab.r4.pm.
+knot.lab.r4.pm. 86400 IN A  10.20.0.44

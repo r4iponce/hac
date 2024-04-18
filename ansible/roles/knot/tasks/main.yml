@@ -1,0 +1,58 @@
+---
+- name: Add knot pgp key
+  ansible.builtin.get_url:
+    url: https://pkg.labs.nic.cz/gpg
+    dest: /usr/share/keyrings/cznic-labs-pkg.gpg
+    mode: "0644"
+    validate_certs: true
+    checksum: sha512:e78a1404feff1040c86f4a199495e4a2cf82684b8ff22ffc318a9bffa0ddf45136e484bc17e4440660c089e1c186af77008c76fb463434611b1f60709b57ee52
+  changed_when: false
+  no_log: false
+
+- name: Add knot repository
+  ansible.builtin.apt_repository:
+    repo: "deb [signed-by=/usr/share/keyrings/cznic-labs-pkg.gpg] https://pkg.labs.nic.cz/knot-dns {{ ansible_distribution_release }} main"
+    state: present
+    filename: knot-dns
+
+
+- name: Install knot
+  ansible.builtin.apt:
+    name: knot
+  notify:
+    - Enable knot
+    - Restart knot
+
+- name: Configure knot
+  ansible.builtin.template:
+    src: knot.conf.j2
+    dest: /etc/knot/knot.conf
+    owner: knot
+    mode: '0640'
+  notify: Restart knot
+
+- name: Allow port 53 (DNS)
+  community.general.ufw:
+    rule: allow
+    port: "{{ item.port }}"
+    proto: "{{ item.proto }}"
+  with_items:
+    - { port: "53", proto: tcp }
+    - { port: "53", proto: udp }
+
+- name: Create knot zones directory
+  ansible.builtin.file:
+    path: /var/lib/knot/zones/
+    state: directory
+    mode: '0750'
+    owner: knot
+
+- name: Copy zone
+  ansible.builtin.copy:
+    src: "{{ item }}"
+    dest: /var/lib/knot/zones/
+    owner: knot
+    mode: '0640'
+  with_fileglob:
+    - zones/*
+  notify: Reload knot

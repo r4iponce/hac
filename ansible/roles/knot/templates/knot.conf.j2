@@ -1,0 +1,32 @@
+server:
+    rundir: "/run/knot"
+    user: knot:knot
+    automatic-acl: on
+    listen: [ {{ listen_ip }}@53 ]
+
+log:
+  - target: syslog
+    any: info
+
+database:
+    storage: "/var/lib/knot"
+
+acl:
+{% for acl in acls %}
+  - id: {{ acl.id }}
+    address: {{ acl.address }}
+    action: {{ acl.action }}
+{% endfor %}
+
+template:
+  - id: default
+    storage: "/var/lib/knot/zones"
+    file: "%s.zone"
+    dnssec-signing: on
+    serial-policy: dateserial
+
+zone:
+{% for zone in zones %}
+  - domain: {{ zone.domain }}
+    acl: {{ zone.acl }}
+{% endfor %}

@@ -22,5 +22,9 @@ view:addr('{{ prefix }}', policy.all(policy.PASS))
 view:addr('0.0.0.0/0', policy.all(policy.DROP))
 view:addr('::/0', policy.all(policy.DROP))
 
+{% for zones in forward %}
+policy.add(policy.suffix(policy.FORWARD('{{ zones.address }}'), {todname('{{ zones.zone }}')}))
+trust_anchors.add('{{ zones.ds }}')
+{% endfor %}
 log_target('stdout')
-log_level('debug') 
+log_level('info') 

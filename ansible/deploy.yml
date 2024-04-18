@@ -25,3 +25,9 @@
   become: true
   roles:
     - kea_dhcp
+
+- name: Knot
+  hosts: dns-authoritative
+  become: true
+  roles:
+    - knot

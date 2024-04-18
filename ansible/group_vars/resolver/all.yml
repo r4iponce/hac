@@ -2,3 +2,8 @@
 kresd_allow:
   - 10.0.0.0/8
   - 172.16.0.0/12
+
+forward:
+  - zone: lab.r4.pm.
+    address: 10.20.0.44
+    ds: "lab.r4.pm. DS 61454 13 4 c510acc4a85ee8cfd93205b0cdc8d65a9e5376cf45517e5bd7db7fc836d076df688b11cf7f3a3b33a9b1011d74d00e74"

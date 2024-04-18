@@ -1,0 +1,11 @@
+---
+acls:
+  - id: ddns
+    action: update
+    address: 10.20.0.42/32
+
+zones:
+  - domain: lab.r4.pm
+    acl: ddns
+
+listen_ip: 10.20.0.44
