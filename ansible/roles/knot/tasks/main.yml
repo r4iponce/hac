@@ -15,7 +15,6 @@
     state: present
     filename: knot-dns
 
-
 - name: Install knot
   ansible.builtin.apt:
     name: knot
